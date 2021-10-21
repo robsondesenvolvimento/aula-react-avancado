@@ -19,10 +19,17 @@ const signupSchema = Yup.object().shape({
     description: Yup.string()
         .max(255)
         .required(),
-    cpf: Yup.number()
-        .min(11)
-        .max(11)
-        .required()
+    cpf: Yup.string()
+        .matches(/\d{3}\.\d{3}\.\d{3}\-\d{2}/g, "Informe o CPF no formato 000.000.000-00")
+        .required(),
+    celular: Yup.string()
+        .matches(/\(\d{2}\) \d{5}\-\d{4}/g, "Informe o celular no formato (00) 00000-0000")
+        .required(),
+    dateBirth: Yup.date()
+        .max(new Date())
+    //dateBirth: Yup.string()
+    //    .matches(/\d{2}\/\d{2}\/\d{4}/g, "Informe a data de nascimento no formato 00/00/0000")
+    //    .required()
 });
 
 function SignupForm() {    
@@ -34,7 +41,9 @@ function SignupForm() {
                 firstName: "Robson",
                 lastName: "Alves",
                 emailAddress: "contato@robsonalves.dev.br",
-                cpf: "03333207940",
+                cpf: "033.332.334-80",
+                celular: "(41) 99755-2541",
+                dateBirth: "2021-10-20",
                 gender: 1,
                 description: "Seja bem vindo"
             }}
@@ -62,6 +71,14 @@ function SignupForm() {
                         <label htmlFor="cpf">CPF</label>
                         <Field type="text" id="cpf" name="cpf" /> <br/>
                         {errors.cpf ? errors.cpf : null} <br/>
+
+                        <label htmlFor="celular">Celular</label>
+                        <Field type="text" id="celular" name="celular" /> <br/>
+                        {errors.celular ? errors.celular : null} <br/>
+
+                        <label htmlFor="dateBirth">Data nascimento</label>
+                        <Field type="text" id="dateBirth" name="dateBirth" /> <br/>
+                        {errors.dateBirth ? errors.dateBirth : null} <br/>
 
                         <label htmlFor="gender">Gender</label>
                         <Field as="select" id="gender" name="gender" >
