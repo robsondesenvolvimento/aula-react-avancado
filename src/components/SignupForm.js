@@ -1,37 +1,81 @@
 import { Formik, Field, Form } from 'formik';
+import * as Yup from 'yup';
 
-function SignupForm() {
+const signupSchema = Yup.object().shape({
+    firstName: Yup.string()
+        .min(2, "O número minimo de caracteres é 2")
+        .max(20, "O número maximo de caracteres é 10")
+        .required("Campo requerido"),
+    lastName: Yup.string()
+        .min(2, "O número minimo de caracteres é 2")
+        .max(20, "O número maximo de caracteres é 10")
+        .required("Campo requerido"),
+    emailAddress: Yup.string()
+        .email()
+        .required(),
+    gender: Yup.number()
+        .moreThan(0)
+        .required(),
+    description: Yup.string()
+        .max(255)
+        .required(),
+    cpf: Yup.number()
+        .min(11)
+        .max(11)
+        .required()
+});
+
+function SignupForm() {    
+
     return (
-        <Formik 
+        <Formik
+            validationSchema={signupSchema}
             initialValues={{
-                name: "Robson",
+                firstName: "Robson",
                 lastName: "Alves",
+                emailAddress: "contato@robsonalves.dev.br",
+                cpf: "03333207940",
                 gender: 1,
                 description: "Seja bem vindo"
             }}
+
+            onSubmit={(values) => {
+                alert("Dados enviados");
+                console.log(values);
+            }}
         >
-            {({values}) => (
+            {({values, errors}) => (
                 <div>
-                    {values.name} <br/>
-                    {values.lastName} <br/>
-                    {values.gender} <br/>
                     <Form>
-                        <label>Nome:
-                            <Field type="text" name="name" />
-                        </label> <br/>
-                        <label>Sobrenome:
-                            <Field type="text" name="lastName" />
-                        </label> <br/>
-                        <label>Genero:
-                            <Field as="select" name="gender" >
+                        <label htmlFor="firstName">First Name</label>
+                        <Field type="text" id="firstName" name="firstName" /> <br/>
+                        {errors.firstName ? errors.firstName: null} <br/>
+
+                        <label htmlFor="lastName">Last Name</label>
+                        <Field type="text" id="lastName"e name="lastName" /> <br/>
+                        {errors.lastName ? errors.lastName : null} <br/>
+
+                        <label htmlFor="emailAddress">Email</label>
+                        <Field type="text" id="emailAddress" name="emailAddress" /> <br/>
+                        {errors.emailAddress ? errors.emailAddress : null} <br/>
+
+                        <label htmlFor="cpf">CPF</label>
+                        <Field type="text" id="cpf" name="cpf" /> <br/>
+                        {errors.cpf ? errors.cpf : null} <br/>
+
+                        <label htmlFor="gender">Gender</label>
+                        <Field as="select" id="gender" name="gender" >
                             <option value="0">Selecione</option>
                             <option value="1">Masculino</option>
                             <option value="2">Feminino</option>
-                        </Field>
-                        </label> <br/>
-                        <label>Sobrenome:
-                            <Field as="textarea" name="description" />
-                        </label> <br/>                        
+                        </Field> <br/>
+                        {errors.gender ? errors.gender : null} <br/>
+
+                        <label htmlFor="description">Gender</label>
+                        <Field as="textarea" id="description" name="description" /> <br/>
+                        {errors.description ? errors.description : null} <br/>
+
+                        <input type="submit" value="Enviar" />
                     </Form>
                 </div>
             )}
