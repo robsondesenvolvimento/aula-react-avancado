@@ -1,6 +1,13 @@
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 
+function incDate(){
+    var newDate = new Date();
+    var incNewDate = new Date();
+    incNewDate.setDate(newDate.getDate() + 1);
+    return incNewDate;
+}
+
 const signupSchema = Yup.object().shape({
     firstName: Yup.string()
         .min(2, "O número minimo de caracteres é 2")
